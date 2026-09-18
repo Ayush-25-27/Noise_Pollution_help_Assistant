@@ -1,0 +1,62 @@
+[
+  {
+    "id": "reg-001",
+    "zone": "residential",
+    "text": "Residential areas have lower permissible noise limits than commercial or industrial zones, reflecting their use for rest and daily living. Under India's Noise Pollution (Regulation and Control) Rules 2000, the daytime limit for residential zones is 55 dB(A) and the nighttime limit is 45 dB(A). Sustained noise above these levels can disrupt sleep, increase stress, and cause long-term cardiovascular harm."
+  },
+  {
+    "id": "reg-002",
+    "zone": "silence",
+    "text": "Areas within roughly 100 meters of schools, hospitals, and courts are designated silence zones under India's Noise Pollution Rules 2000 — the strictest category, with a daytime limit of 50 dB(A) and a nighttime limit of 40 dB(A). Enforcement typically requires documented, timestamped evidence rather than a single anecdotal complaint. Using a horn or loud sound-amplifying device in a silence zone is a cognizable offence under Rule 5(2)."
+  },
+  {
+    "id": "reg-003",
+    "zone": "commercial",
+    "text": "Commercial zones permit higher ambient noise than residential areas to reflect ongoing business activity, with limits of 65 dB(A) during the day and 55 dB(A) at night under India's Noise Pollution Rules 2000. Extended construction, large outdoor events, or amplified sound systems can exceed these limits. If a commercial establishment repeatedly exceeds the limit, a complaint can be lodged with the local municipal or pollution control body."
+  },
+  {
+    "id": "reg-004",
+    "zone": "industrial",
+    "text": "Industrial zones carry the highest permissible limits — 75 dB(A) by day and 70 dB(A) by night — under India's Noise Pollution Rules 2000. Readings well above even these thresholds, or industrial-level noise bleeding into an adjacent residential or silence zone, warrant a complaint referencing the affected zone's actual limit, not the industrial one. Workers in industrial facilities are protected separately under the Factories Act 1948 (90 dB exposure limit for 8-hour shifts)."
+  },
+  {
+    "id": "reg-005",
+    "zone": "general",
+    "text": "A single noise reading is rarely sufficient as evidence for a formal complaint. Repeated, timestamped logs across different times of day — especially showing a recurring pattern — make a far stronger case to a Resident Welfare Association (RWA), the local municipal body, or the State Pollution Control Board. Under India's Noise Pollution Rules 2000, Rule 7 empowers any person to make a complaint to the authority."
+  },
+  {
+    "id": "reg-006",
+    "zone": "general",
+    "text": "Reports intended for advocacy or municipal complaints should aggregate readings by location and time pattern rather than attributing them to specific individuals or households, both to protect privacy and because the goal is documenting a location-based pattern, not assigning blame to a person. The complaint authority for noise violations is typically the District Magistrate, Sub-Divisional Magistrate, or the Police Commissioner, depending on the state."
+  },
+  {
+    "id": "reg-007",
+    "zone": "general",
+    "text": "The World Health Organisation (WHO) Environmental Noise Guidelines for the European Region (2018) recommend keeping road traffic noise below 53 dB(A) Lden (day-evening-night level) and below 45 dB(A) Lnight to protect against sleep disturbance. While these are European guidelines, they are widely cited as global best-practice thresholds for health-based noise assessment and are stricter than India's current statutory limits."
+  },
+  {
+    "id": "reg-008",
+    "zone": "general",
+    "text": "Noise levels above 85 dB(A) sustained over long periods are associated with permanent hearing damage, as established by OSHA and WHO occupational health standards. Community noise above 70 dB(A) can interfere with speech communication and learning. These thresholds are useful context when presenting a reading to a health authority or school principal in a silence-zone complaint."
+  },
+  {
+    "id": "reg-009",
+    "zone": "silence",
+    "text": "Hospitals and healthcare facilities require low ambient noise to support patient recovery. Studies show that noise above 45 dB(A) in wards disrupts sleep and increases patient stress hormones. The Central Pollution Control Board (CPCB) has issued guidelines recommending that hospitals actively monitor and control ambient noise in consultation with local authorities."
+  },
+  {
+    "id": "reg-010",
+    "zone": "residential",
+    "text": "Under India's Noise Pollution Rules 2000, loud speakers and public address systems require prior written permission from the authority and may only be used between 6 AM and 10 PM. No such device may be used at night except in a closed premises. Violations can attract action under Section 290 of the IPC (public nuisance) in addition to the Noise Pollution Rules."
+  },
+  {
+    "id": "reg-011",
+    "zone": "commercial",
+    "text": "Temporary events such as festivals, fairs, and concerts in commercial or open areas may be granted a one-time exemption for loud speakers for a limited duration by the designated authority. However, these exemptions do not override silence zone restrictions, and even in commercial areas the nighttime limit of 55 dB(A) remains enforceable after 10 PM."
+  },
+  {
+    "id": "reg-012",
+    "zone": "industrial",
+    "text": "Construction activity, a common source of industrial-level noise in urban areas, is restricted in many Indian states to daytime hours only (typically 6 AM to 10 PM) in residential neighbourhoods. Pile driving and other high-impact equipment can produce readings above 90 dB(A) at 50 metres. If construction work is identified as the source, the complaint can cite both the Noise Pollution Rules and applicable municipal building bye-laws."
+  }
+]

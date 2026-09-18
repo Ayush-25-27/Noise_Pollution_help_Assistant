@@ -1,0 +1,32 @@
+{
+  "Near Lotus Public School, Sector 12": {
+    "db": 78,
+    "time_of_day": "night",
+    "duration": "sustained"
+  },
+  "MG Road Market": {
+    "db": 82,
+    "time_of_day": "day",
+    "duration": "sustained"
+  },
+  "Green Park Residential Block C": {
+    "db": 62,
+    "time_of_day": "night",
+    "duration": "brief"
+  },
+  "City Hospital Gate": {
+    "db": 68,
+    "time_of_day": "day",
+    "duration": "sustained"
+  },
+  "_default": {
+    "db": 65,
+    "time_of_day": "day",
+    "duration": "sustained"
+  },
+  "Test Submit Street": {
+    "db": 72,
+    "time_of_day": "day",
+    "duration": "sustained"
+  }
+}

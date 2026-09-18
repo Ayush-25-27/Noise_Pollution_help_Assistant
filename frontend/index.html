@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noise Pollution Awareness Map</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tokens ── */
+:root {
+  --navy:   #0b0e1f;
+  --deep:   #111428;
+  --violet: #1a1040;
+  --card:   #13172e;
+  --border: rgba(255,255,255,.08);
+  --muted:  rgba(255,255,255,.45);
+  --text:   #e8eaf6;
+
+  --teal:   #2dd4bf;
+  --amber:  #fbbf24;
+  --coral:  #f87171;
+  --blue:   #60a5fa;
+  --purple: #a78bfa;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════════
+   NAV
+══════════════════════════════════════════ */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 60px;
+  background: rgba(11,14,31,.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 15px; font-weight: 700; color: var(--text); text-decoration: none;
+}
+.nav-logo svg { flex-shrink: 0; }
+.nav-links {
+  display: flex; align-items: center; gap: 32px; list-style: none;
+}
+.nav-links a {
+  font-size: 13px; color: rgba(255,255,255,.75); text-decoration: none;
+  transition: color .15s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-pill {
+  padding: 8px 20px; border-radius: 999px;
+  background: var(--teal); color: #0b1a18;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  border: none; transition: opacity .15s; white-space: nowrap;
+}
+.nav-pill:hover { opacity: .85; }
+
+/* ══════════════════════════════════════════
+   HERO
+══════════════════════════════════════════ */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0b0e1f 0%, #15103a 50%, #1a0b2e 100%);
+  padding-top: 60px;
+}
+
+/* Ripple canvas background */
+.hero-canvas {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+
+/* Skyline SVG */
+.hero-skyline {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  width: 100%; height: 220px; opacity: .18;
+}
+
+.hero-inner {
+  position: relative; z-index: 2;
+  max-width: 1140px; margin: 0 auto; padding: 0 40px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+
+.hero-copy { max-width: 520px; }
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--teal); margin-bottom: 24px;
+}
+.hero-label::before {
+  content: '';
+  display: block; width: 24px; height: 2px; background: var(--teal);
+}
+.hero-h1 {
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -.02em; margin-bottom: 20px;
+}
+.hero-h1 em { font-style: normal; color: var(--teal); }
+.hero-sub {
+  font-size: 16px; color: var(--muted); line-height: 1.65;
+  margin-bottom: 36px; max-width: 420px;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 32px; border-radius: 999px;
+  background: var(--teal); color: #071a18;
+  font-size: 15px; font-weight: 700; border: none; cursor: pointer;
+  transition: opacity .15s, transform .15s;
+}
+.hero-cta:hover { opacity: .88; transform: translateY(-1px); }
+.hero-cta svg { flex-shrink: 0; }
+
+/* Illustration */
+.hero-illo {
+  display: flex; justify-content: center; align-items: flex-end;
+  height: 420px; position: relative;
+}
+.hero-illo svg { width: 100%; max-width: 380px; height: auto; }
+
+/* ══════════════════════════════════════════
+   WHY IT MATTERS
+══════════════════════════════════════════ */
+.section { max-width: 1140px; margin: 0 auto; padding: 100px 40px; }
+
+.section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--blue); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-label::before { content: ''; display: block; width: 24px; height: 2px; background: var(--blue); }
+
+.section-h2 {
+  font-size: clamp(24px, 3vw, 40px); font-weight: 800;
+  letter-spacing: -.02em; margin-bottom: 56px; max-width: 480px;
+  line-height: 1.15;
+}
+
+.why-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+}
+.why-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px 24px;
+  transition: border-color .2s;
+}
+.why-card:hover { border-color: rgba(255,255,255,.18); }
+.why-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.why-icon.teal  { background: rgba(45,212,191,.12); color: var(--teal); }
+.why-icon.amber { background: rgba(251,191,36,.12);  color: var(--amber); }
+.why-icon.coral { background: rgba(248,113,113,.12); color: var(--coral); }
+.why-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.why-card p  { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* ══════════════════════════════════════════
+   TRACK THE PATTERN
+══════════════════════════════════════════ */
+.track-wrap {
+  background: linear-gradient(160deg, #0e1230 0%, #180e35 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.track-inner {
+  max-width: 1140px; margin: 0 auto; padding: 100px 40px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.track-copy .section-label { color: var(--purple); }
+.track-copy .section-label::before { background: var(--purple); }
+.track-copy .section-h2 { margin-bottom: 24px; }
+.track-lines p {
+  font-size: 17px; color: var(--muted); line-height: 1.7; margin-bottom: 0;
+}
+.track-lines p strong { color: var(--text); font-weight: 600; }
+
+.track-illo { display: flex; justify-content: center; }
+.track-illo svg { width: 100%; max-width: 420px; height: auto; }
+
+/* ══════════════════════════════════════════
+   APP SECTION (the actual tool)
+══════════════════════════════════════════ */
+.app-wrap { background: var(--deep); border-top: 1px solid var(--border); }
+.app-inner {
+  max-width: 760px; margin: 0 auto; padding: 80px 40px;
+}
+.app-inner .section-label { color: var(--teal); }
+.app-inner .section-label::before { background: var(--teal); }
+.app-inner .section-h2 { margin-bottom: 36px; max-width: 100%; }
+
+/* Form card */
+.f-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 28px; margin-bottom: 20px;
+}
+.f-card-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .08em; color: var(--muted); margin-bottom: 20px;
+}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid .full { grid-column: 1 / -1; }
+
+label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 5px; font-weight: 500; }
+input, select {
+  width: 100%; padding: 10px 14px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  border-radius: 10px; font-size: 14px; color: var(--text);
+  transition: border-color .15s;
+  -webkit-appearance: none; appearance: none;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232dd4bf' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+  padding-right: 32px;
+}
+/* Dropdown option list — dark bg + readable text */
+select option {
+  background: #1a1f42;
+  color: #e8eaf6;
+}
+select option:checked {
+  background: #2dd4bf;
+  color: #071a18;
+}
+input::placeholder { color: rgba(255,255,255,.25); }
+input:focus, select:focus { outline: none; border-color: var(--teal); }
+
+.btn-row { display: flex; gap: 10px; margin-top: 18px; }
+.submit-btn {
+  flex: 1; padding: 12px 20px;
+  background: var(--teal); color: #071a18;
+  border: none; border-radius: 10px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  transition: opacity .15s;
+}
+.submit-btn:hover { opacity: .85; }
+.submit-btn:disabled { opacity: .45; cursor: not-allowed; }
+.clear-btn {
+  padding: 12px 20px; border-radius: 10px;
+  background: rgba(248,113,113,.12); color: var(--coral);
+  border: 1px solid rgba(248,113,113,.25);
+  font-size: 14px; font-weight: 600; cursor: pointer;
+  transition: background .15s; white-space: nowrap;
+}
+.clear-btn:hover { background: rgba(248,113,113,.22); }
+
+.error { color: var(--coral); font-size: 13px; margin-top: 10px; }
+
+/* Result */
+#result { display: none; }
+
+.banner {
+  border-radius: 12px; padding: 14px 18px;
+  font-size: 14px; font-weight: 700; margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.banner.exceeds {
+  background: rgba(248,113,113,.12);
+  color: var(--coral);
+  border: 1px solid rgba(248,113,113,.3);
+}
+.banner.ok {
+  background: rgba(45,212,191,.1);
+  color: var(--teal);
+  border: 1px solid rgba(45,212,191,.25);
+}
+
+.stat-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px;
+}
+.stat {
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px;
+}
+.stat-label {
+  font-size: 10px; color: var(--muted); text-transform: uppercase;
+  letter-spacing: .06em; margin-bottom: 6px;
+}
+.stat-value { font-size: 22px; font-weight: 800; }
+.stat-value.red   { color: var(--coral); }
+.stat-value.green { color: var(--teal); }
+.stat-value.amber { color: var(--amber); }
+
+.info-row { font-size: 13px; color: var(--muted); margin-bottom: 9px; line-height: 1.5; }
+.info-row strong { color: var(--text); }
+
+.passages { list-style: none; }
+.passages li {
+  background: rgba(167,139,250,.07);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 14px; font-size: 13px; color: var(--muted);
+  line-height: 1.6; margin-bottom: 8px;
+}
+
+.answer { font-size: 14px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+#questionEcho { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+#questionEcho strong { color: var(--text); }
+
+/* Toggle submit */
+.toggle-btn {
+  background: none; border: 1px solid var(--border); color: var(--muted);
+  font-size: 13px; font-weight: 500; padding: 8px 16px;
+  border-radius: 8px; cursor: pointer; margin-bottom: 16px; width: auto;
+  transition: border-color .15s, color .15s;
+}
+.toggle-btn:hover { border-color: var(--teal); color: var(--teal); background: none; }
+#submitSection { display: none; }
+
+/* Spinner */
+.spinner {
+  display: inline-block; width: 15px; height: 15px;
+  border: 2px solid rgba(255,255,255,.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin .6s linear infinite;
+  vertical-align: middle; margin-right: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════════
+   MAP SECTION
+══════════════════════════════════════════ */
+.map-section {
+  background: linear-gradient(160deg, #0e1230 0%, #0b0e1f 100%);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.map-inner {
+  max-width: 1140px; margin: 0 auto; padding: 100px 40px;
+}
+.map-inner .section-label { color: var(--amber); }
+.map-inner .section-label::before { background: var(--amber); }
+
+.map-layout {
+  display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start;
+}
+.map-container {
+  position: relative;
+}
+.india-map-svg {
+  width: 100%; height: auto; max-width: 660px;
+  display: block;
+}
+/* Hotspot pins */
+.map-pin {
+  cursor: pointer;
+}
+.map-pin circle.pulse {
+  animation: mapPulse 2s ease-out infinite;
+  transform-origin: center;
+}
+@keyframes mapPulse {
+  0%   { r: 6; opacity: .7; }
+  100% { r: 14; opacity: 0; }
+}
+.map-tooltip {
+  position: absolute; pointer-events: none;
+  background: #1a1f42; border: 1px solid var(--teal);
+  color: var(--text); font-size: 12px; padding: 6px 10px;
+  border-radius: 8px; white-space: nowrap; z-index: 20;
+  opacity: 0; transition: opacity .15s;
+}
+.map-tooltip.visible { opacity: 1; }
+
+.map-legend {
+  display: flex; gap: 18px; margin-top: 14px; flex-wrap: wrap;
+}
+.map-legend-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--muted);
+}
+.map-legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+
+/* Top-10 rank list */
+.rank-list { list-style: none; }
+.rank-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border);
+}
+.rank-item:last-child { border-bottom: none; }
+.rank-num {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; flex-shrink: 0;
+  background: rgba(255,255,255,.06); color: var(--muted);
+}
+.rank-num.top3 { background: rgba(248,113,113,.18); color: var(--coral); }
+.rank-city { font-size: 13px; font-weight: 600; flex: 1; }
+.rank-db {
+  font-size: 13px; font-weight: 800; color: var(--coral);
+}
+.rank-db.amber { color: var(--amber); }
+
+/* State table */
+.state-table-wrap {
+  margin-top: 56px;
+}
+.state-table-wrap .section-h2 { margin-bottom: 24px; }
+.state-table {
+  width: 100%; border-collapse: collapse;
+}
+.state-table th {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--muted);
+  padding: 10px 14px; text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.state-table td {
+  font-size: 13px; color: var(--text);
+  padding: 11px 14px; border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.state-table tr:last-child td { border-bottom: none; }
+.state-table tbody tr:hover td { background: rgba(255,255,255,.03); }
+.complaint-bar-bg {
+  background: rgba(255,255,255,.06); border-radius: 4px;
+  height: 6px; width: 120px; overflow: hidden;
+}
+.complaint-bar {
+  height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--teal), var(--amber));
+}
+.severity-badge {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 999px; text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.severity-badge.critical { background: rgba(248,113,113,.18); color: var(--coral); }
+.severity-badge.high     { background: rgba(251,191,36,.15);  color: var(--amber); }
+.severity-badge.moderate { background: rgba(45,212,191,.12);  color: var(--teal); }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .nav { padding: 0 20px; }
+  .hero-inner { grid-template-columns: 1fr; gap: 0; padding: 20px; }
+  .hero-illo { height: 240px; }
+  .why-grid { grid-template-columns: 1fr; }
+  .track-inner { grid-template-columns: 1fr; gap: 40px; padding: 60px 20px; }
+  .track-illo { order: -1; }
+  .section { padding: 60px 20px; }
+  .app-inner { padding: 60px 20px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-grid .full { grid-column: 1; }
+  .map-layout { grid-template-columns: 1fr; }
+  .map-inner { padding: 60px 20px; }
+  .complaint-bar-bg { width: 80px; }
+  .xaya-panel { width: calc(100vw - 32px) !important; right: 16px !important; bottom: 80px !important; }
+}
+
+/* ══════════════════════════════════════════
+   XAYA CHATBOT
+══════════════════════════════════════════ */
+/* Floating toggle button */
+.xaya-btn {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9000;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: linear-gradient(135deg, #2dd4bf 0%, #a78bfa 100%);
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(45,212,191,.35);
+  transition: transform .2s, box-shadow .2s;
+}
+.xaya-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(45,212,191,.5); }
+.xaya-btn svg { flex-shrink: 0; }
+/* Unread badge */
+.xaya-badge {
+  position: absolute; top: -2px; right: -2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--coral); border: 2px solid var(--navy);
+  font-size: 9px; font-weight: 800; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Chat panel */
+.xaya-panel {
+  position: fixed; bottom: 96px; right: 28px; z-index: 8999;
+  width: 360px;
+  background: var(--card);
+  border: 1px solid rgba(45,212,191,.25);
+  border-radius: 20px;
+  display: flex; flex-direction: column;
+  box-shadow: 0 12px 48px rgba(0,0,0,.55);
+  overflow: hidden;
+  transform: translateY(16px) scale(.97);
+  opacity: 0; pointer-events: none;
+  transition: transform .22s cubic-bezier(.34,1.56,.64,1), opacity .18s;
+}
+.xaya-panel.open {
+  transform: translateY(0) scale(1);
+  opacity: 1; pointer-events: auto;
+}
+
+/* Header */
+.xaya-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px;
+  background: linear-gradient(90deg, rgba(45,212,191,.12) 0%, rgba(167,139,250,.08) 100%);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.xaya-avatar {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: linear-gradient(135deg, #2dd4bf, #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.xaya-name { font-size: 14px; font-weight: 700; }
+.xaya-status {
+  font-size: 11px; color: var(--teal);
+  display: flex; align-items: center; gap: 4px;
+}
+.xaya-status::before {
+  content: ''; display: block;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--teal);
+}
+.xaya-close-btn {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  color: var(--muted); padding: 4px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .15s, background .15s;
+}
+.xaya-close-btn:hover { color: var(--text); background: rgba(255,255,255,.07); }
+
+/* Messages area */
+.xaya-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 10px;
+  max-height: 320px;
+  scroll-behavior: smooth;
+}
+.xaya-messages::-webkit-scrollbar { width: 4px; }
+.xaya-messages::-webkit-scrollbar-track { background: transparent; }
+.xaya-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 4px; }
+
+/* Message bubbles */
+.xaya-msg {
+  max-width: 88%; padding: 9px 13px;
+  border-radius: 14px; font-size: 13px; line-height: 1.55;
+  word-break: break-word;
+}
+.xaya-msg.bot {
+  background: rgba(45,212,191,.1); color: var(--text);
+  border: 1px solid rgba(45,212,191,.15);
+  border-bottom-left-radius: 4px; align-self: flex-start;
+}
+.xaya-msg.user {
+  background: rgba(167,139,250,.18); color: var(--text);
+  border: 1px solid rgba(167,139,250,.2);
+  border-bottom-right-radius: 4px; align-self: flex-end;
+}
+/* Typing indicator */
+.xaya-typing {
+  display: flex; align-items: center; gap: 4px;
+  padding: 10px 13px; align-self: flex-start;
+}
+.xaya-typing span {
+  display: block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--teal); opacity: .5;
+  animation: xayaDot .9s ease-in-out infinite;
+}
+.xaya-typing span:nth-child(2) { animation-delay: .15s; }
+.xaya-typing span:nth-child(3) { animation-delay: .3s; }
+@keyframes xayaDot {
+  0%,100% { transform: translateY(0); opacity: .4; }
+  50%      { transform: translateY(-5px); opacity: 1; }
+}
+
+/* Input row */
+.xaya-input-row {
+  display: flex; gap: 8px; padding: 12px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.xaya-input {
+  flex: 1; padding: 9px 13px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--border);
+  border-radius: 10px; font-size: 13px; color: var(--text);
+  font-family: inherit;
+  resize: none; outline: none;
+  transition: border-color .15s;
+  line-height: 1.4; max-height: 100px; overflow-y: auto;
+}
+.xaya-input::placeholder { color: rgba(255,255,255,.3); }
+.xaya-input:focus { border-color: var(--teal); }
+.xaya-send-btn {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--teal); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; align-self: flex-end;
+  transition: opacity .15s, transform .15s;
+}
+.xaya-send-btn:hover { opacity: .85; transform: scale(1.05); }
+.xaya-send-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+
+/* Quick-reply chips */
+.xaya-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  padding: 0 12px 10px;
+}
+.xaya-chip {
+  padding: 5px 11px; border-radius: 999px;
+  border: 1px solid rgba(45,212,191,.3);
+  background: rgba(45,212,191,.07);
+  color: var(--teal); font-size: 11px; cursor: pointer;
+  transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.xaya-chip:hover { background: rgba(45,212,191,.15); border-color: rgba(45,212,191,.6); }
+
+/* ══════════════════════════════════════════
+   HISTORY SECTION
+══════════════════════════════════════════ */
+.history-wrap {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+}
+.history-inner {
+  max-width: 760px; margin: 0 auto; padding: 80px 40px;
+}
+.history-inner .section-label { color: var(--purple); }
+.history-inner .section-label::before { background: var(--purple); }
+
+.history-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 28px; flex-wrap: wrap; gap: 12px;
+}
+.history-header .section-h2 { margin-bottom: 0; }
+.history-clear-btn {
+  padding: 8px 18px; border-radius: 8px;
+  background: rgba(248,113,113,.1); color: var(--coral);
+  border: 1px solid rgba(248,113,113,.25);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background .15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 6px;
+}
+.history-clear-btn:hover { background: rgba(248,113,113,.2); }
+.history-clear-btn:disabled { opacity: .4; cursor: not-allowed; }
+
+/* Empty state */
+.history-empty {
+  text-align: center; padding: 60px 20px;
+  color: var(--muted);
+}
+.history-empty svg { opacity: .25; margin-bottom: 16px; }
+.history-empty p { font-size: 14px; line-height: 1.6; }
+.history-empty strong { color: var(--text); display: block; font-size: 16px; margin-bottom: 6px; }
+
+/* History cards list */
+.history-list { display: flex; flex-direction: column; gap: 14px; }
+
+.history-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 20px;
+  position: relative;
+  transition: border-color .2s;
+}
+.history-card:hover { border-color: rgba(255,255,255,.14); }
+.history-card.exceeds { border-left: 3px solid var(--coral); }
+.history-card.ok      { border-left: 3px solid var(--teal); }
+
+.history-card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; margin-bottom: 10px;
+}
+.history-card-loc {
+  font-size: 14px; font-weight: 700; color: var(--text);
+  flex: 1; line-height: 1.3;
+}
+.history-card-date {
+  font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; margin-top: 2px;
+}
+
+.history-card-chips {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px;
+}
+.history-chip {
+  padding: 3px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 600;
+  background: rgba(255,255,255,.06); color: var(--muted);
+  border: 1px solid var(--border);
+}
+.history-chip.red    { background: rgba(248,113,113,.12); color: var(--coral); border-color: rgba(248,113,113,.2); }
+.history-chip.green  { background: rgba(45,212,191,.1);  color: var(--teal);  border-color: rgba(45,212,191,.2); }
+.history-chip.amber  { background: rgba(251,191,36,.1);  color: var(--amber); border-color: rgba(251,191,36,.2); }
+.history-chip.purple { background: rgba(167,139,250,.1); color: var(--purple);border-color: rgba(167,139,250,.2); }
+
+.history-card-answer {
+  font-size: 12px; color: var(--muted); line-height: 1.55;
+  margin-bottom: 12px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.history-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.history-del-btn {
+  padding: 5px 12px; border-radius: 7px;
+  background: rgba(248,113,113,.08); color: var(--coral);
+  border: 1px solid rgba(248,113,113,.2);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 5px;
+}
+.history-del-btn:hover { background: rgba(248,113,113,.18); }
+.history-rerun-btn {
+  padding: 5px 12px; border-radius: 7px;
+  background: rgba(45,212,191,.08); color: var(--teal);
+  border: 1px solid rgba(45,212,191,.2);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .15s; white-space: nowrap;
+  display: flex; align-items: center; gap: 5px;
+}
+.history-rerun-btn:hover { background: rgba(45,212,191,.18); }
+.history-count {
+  font-size: 11px; color: var(--muted); margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .history-inner { padding: 60px 20px; }
+  .history-header { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<nav class="nav">
+  <a class="nav-logo" href="#">
+    <svg width="28" height="20" viewBox="0 0 28 20" fill="none">
+      <rect x="0" y="8" width="3" height="4" rx="1.5" fill="#2dd4bf"/>
+      <rect x="5" y="4" width="3" height="12" rx="1.5" fill="#2dd4bf"/>
+      <rect x="10" y="0" width="3" height="20" rx="1.5" fill="#2dd4bf"/>
+      <rect x="15" y="4" width="3" height="12" rx="1.5" fill="#2dd4bf"/>
+      <rect x="20" y="8" width="3" height="4" rx="1.5" fill="#2dd4bf"/>
+      <rect x="25" y="6" width="3" height="8" rx="1.5" fill="rgba(45,212,191,.4)"/>
+    </svg>
+    dB Map
+  </a>
+  <ul class="nav-links">
+    <li><a href="#map">Map</a></li>
+    <li><a href="#">How it works</a></li>
+    <li><a href="#app">Report noise</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#" id="helpNavLink">Help</a></li>
+  </ul>
+  <button class="nav-pill" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">Report a reading</button>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="rippleCanvas"></canvas>
+
+  <!-- Skyline silhouette -->
+  <svg class="hero-skyline" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,220 L0,160 L40,160 L40,130 L60,130 L60,160 L80,160 L80,80 L100,80 L100,60 L110,60 L110,80 L130,80 L130,100 L150,100 L150,70 L160,70 L160,100 L180,100 L180,160 L200,160 L200,90 L215,90 L215,70 L225,70 L225,90 L240,90 L240,50 L250,50 L250,30 L255,30 L255,50 L265,50 L265,90 L280,90 L280,110 L300,110 L300,80 L320,80 L320,60 L335,60 L335,40 L340,40 L340,60 L350,60 L350,80 L370,80 L370,160 L390,160 L390,100 L405,100 L405,75 L415,75 L415,55 L422,55 L422,75 L432,75 L432,100 L450,100 L450,120 L470,120 L470,85 L490,85 L490,120 L510,120 L510,90 L525,90 L525,65 L535,65 L535,90 L560,90 L560,160 L580,160 L580,110 L600,110 L600,70 L610,70 L610,50 L620,50 L620,70 L635,70 L635,110 L660,110 L660,90 L680,90 L680,60 L695,60 L695,45 L702,45 L702,60 L715,60 L715,90 L730,90 L730,160 L760,160 L760,100 L780,100 L780,75 L795,75 L795,50 L802,35 L809,50 L809,75 L825,75 L825,100 L840,100 L840,130 L860,130 L860,90 L880,90 L880,160 L910,160 L910,100 L930,100 L930,70 L945,70 L945,50 L952,50 L952,70 L965,70 L965,100 L985,100 L985,120 L1010,120 L1010,80 L1030,80 L1030,60 L1042,60 L1042,45 L1050,45 L1050,60 L1062,60 L1062,80 L1080,80 L1080,110 L1100,110 L1100,160 L1120,160 L1120,90 L1140,90 L1140,70 L1152,70 L1152,55 L1160,55 L1160,70 L1175,70 L1175,90 L1200,90 L1200,120 L1220,120 L1220,80 L1240,80 L1240,60 L1255,60 L1255,80 L1270,80 L1270,120 L1290,120 L1290,160 L1310,160 L1310,100 L1330,100 L1330,75 L1345,75 L1345,55 L1352,55 L1352,75 L1365,75 L1365,100 L1390,100 L1390,160 L1440,160 L1440,220 Z" fill="white"/>
+    <!-- Crane arm -->
+    <line x1="250" y1="30" x2="290" y2="30" stroke="white" stroke-width="2"/>
+    <line x1="250" y1="30" x2="250" y2="10" stroke="white" stroke-width="2"/>
+    <line x1="270" y1="30" x2="270" y2="50" stroke="white" stroke-width="1.5"/>
+    <line x1="802" y1="35" x2="845" y2="35" stroke="white" stroke-width="2"/>
+    <line x1="802" y1="10" x2="802" y2="35" stroke="white" stroke-width="2"/>
+    <line x1="820" y1="35" x2="820" y2="55" stroke="white" stroke-width="1.5"/>
+  </svg>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <div class="hero-label">Noise Pollution Awareness</div>
+      <h1 class="hero-h1">
+        Know how loud<br>
+        your city<br>
+        <em>really is.</em>
+      </h1>
+      <p class="hero-sub">Take back your right to quiet. Check any reading against India's legal noise limits and get an AI-powered advisory in seconds.</p>
+      <button class="hero-cta" onclick="document.getElementById('app').scrollIntoView({behavior:'smooth'})">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M6 8h4M8 6l2 2-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Check a reading
+      </button>
+    </div>
+
+    <!-- Illustration: person with dB meter -->
+    <div class="hero-illo">
+      <svg viewBox="0 0 340 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Glow behind meter -->
+        <ellipse cx="200" cy="160" rx="70" ry="70" fill="rgba(45,212,191,.06)"/>
+        <!-- Sound ripples from meter -->
+        <circle cx="220" cy="150" r="30" stroke="rgba(45,212,191,.35)" stroke-width="1.2"/>
+        <circle cx="220" cy="150" r="50" stroke="rgba(45,212,191,.2)" stroke-width="1"/>
+        <circle cx="220" cy="150" r="70" stroke="rgba(45,212,191,.1)" stroke-width="1"/>
+        <circle cx="220" cy="150" r="90" stroke="rgba(45,212,191,.05)" stroke-width="1"/>
+        <!-- Person body -->
+        <ellipse cx="155" cy="380" rx="35" ry="8" fill="rgba(45,212,191,.08)"/>
+        <!-- Legs -->
+        <path d="M148 340 L140 380" stroke="#4a5080" stroke-width="6" stroke-linecap="round"/>
+        <path d="M162 340 L168 380" stroke="#4a5080" stroke-width="6" stroke-linecap="round"/>
+        <!-- Torso -->
+        <rect x="135" y="255" width="40" height="90" rx="12" fill="#2a2f5a"/>
+        <!-- Arm holding meter up -->
+        <path d="M175 270 C195 250 210 210 220 165" stroke="#2a2f5a" stroke-width="10" stroke-linecap="round"/>
+        <!-- Other arm -->
+        <path d="M135 275 L110 310" stroke="#2a2f5a" stroke-width="9" stroke-linecap="round"/>
+        <!-- Head -->
+        <circle cx="155" cy="235" r="22" fill="#2a2f5a"/>
+        <!-- Face hint -->
+        <circle cx="148" cy="232" r="3" fill="#4a5580"/>
+        <circle cx="162" cy="232" r="3" fill="#4a5580"/>
+        <!-- dB Meter device -->
+        <rect x="203" y="130" width="34" height="50" rx="7" fill="#1a1f42" stroke="rgba(45,212,191,.5)" stroke-width="1.5"/>
+        <!-- Meter screen glow -->
+        <rect x="207" y="135" width="26" height="20" rx="4" fill="rgba(45,212,191,.15)"/>
+        <text x="220" y="149" text-anchor="middle" font-size="8" font-weight="800" fill="#2dd4bf" font-family="system-ui">78</text>
+        <text x="220" y="158" text-anchor="middle" font-size="4.5" fill="rgba(45,212,191,.7)" font-family="system-ui">dB</text>
+        <!-- Meter bar at bottom -->
+        <rect x="208" y="162" width="24" height="5" rx="2.5" fill="#1e2448"/>
+        <rect x="208" y="162" width="19" height="5" rx="2.5" fill="#f87171"/>
+        <!-- Subtle floating dB labels -->
+        <text x="280" y="120" font-size="10" fill="rgba(45,212,191,.4)" font-family="system-ui" font-weight="700">78 dB</text>
+        <text x="55" y="200" font-size="9" fill="rgba(251,191,36,.3)" font-family="system-ui">limit: 40</text>
+        <!-- Grass tufts at bottom -->
+        <path d="M60 390 Q65 370 70 390" stroke="rgba(45,212,191,.2)" stroke-width="1.5" fill="none"/>
+        <path d="M72 392 Q77 375 82 392" stroke="rgba(45,212,191,.15)" stroke-width="1.5" fill="none"/>
+        <path d="M50 394 Q54 378 58 394" stroke="rgba(45,212,191,.1)" stroke-width="1.5" fill="none"/>
+        <path d="M240 395 Q244 380 248 395" stroke="rgba(45,212,191,.12)" stroke-width="1.5" fill="none"/>
+        <path d="M252 393 Q256 378 260 393" stroke="rgba(45,212,191,.1)" stroke-width="1.5" fill="none"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ WHY IT MATTERS ══════ -->
+<section class="section">
+  <div class="section-label">Why this matters</div>
+  <h2 class="section-h2">Your neighborhood deserves data, not just noise.</h2>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon teal">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2a8 8 0 100 16A8 8 0 0010 2z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>Legal clarity</h3>
+      <p>Know India's actual decibel limits for your zone — silence, residential, commercial, or industrial — night and day.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon amber">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.22 4.22l1.42 1.42M14.36 14.36l1.42 1.42M4.22 15.78l1.42-1.42M14.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <h3>Real-time data</h3>
+      <p>See live and historical readings on the map. Understand patterns in your area, not just a single moment in time.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon coral">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2L3 7v11h14V7L10 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M7 18v-6h6v6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Community action</h3>
+      <p>File complaints with your RWA or ward office and track resolution. Aggregated evidence makes the strongest case.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ INDIA NOISE MAP ══════ -->
+<div class="map-section" id="map">
+  <div class="map-inner">
+    <div class="section-label">India Noise Map</div>
+    <h2 class="section-h2" style="margin-bottom:36px;">Top noise pollution hotspots across India.</h2>
+
+    <div class="map-layout">
+      <!-- India SVG Map with pins -->
+      <div class="map-container" id="mapContainer">
+        <div class="map-tooltip" id="mapTooltip"></div>
+        <!--
+          India map — accurate geographic outline in a 560×640 viewBox.
+          Coordinate mapping (approximate): lon 68–97°E → x 30–530, lat 8–37°N → y 30–620
+          Scale: ~17.3 px/° lon, ~20.7 px/° lat
+          City pin coords derived from actual lat/lon.
+        -->
+        <svg class="india-map-svg" viewBox="0 0 560 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="3" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+
+          <!-- ── MAIN INDIA OUTLINE (accurate simplified path) ── -->
+          <!-- Based on actual geographic coordinates of India's boundary -->
+          <!-- NW corner: Jammu/Kashmir; NE: Arunachal; S tip: Kanyakumari; W: Gujarat coast; E: Bay coast -->
+          <path id="india-main"
+            d="M 230,32  L 250,30  L 272,34  L 292,30  L 318,28  L 344,32
+               L 362,28  L 385,34  L 400,30  L 418,36  L 432,44
+               L 442,58  L 450,72  L 456,88  L 460,108 L 462,128
+               L 470,142 L 478,152 L 488,162 L 498,172 L 504,188
+               L 508,208 L 510,228 L 510,248 L 508,268 L 504,286
+               L 498,302 L 490,318 L 480,334 L 470,348 L 458,360
+               L 448,372 L 438,382 L 428,390 L 418,398 L 410,408
+               L 402,420 L 394,434 L 386,448 L 376,460 L 364,470
+               L 352,478 L 340,486 L 328,494 L 316,502 L 306,512
+               L 296,524 L 288,536 L 282,550 L 278,564 L 276,578
+               L 274,592 L 272,604 L 270,614 L 268,622 L 266,630
+               L 264,620 L 260,608 L 254,594 L 246,580 L 236,566
+               L 224,554 L 212,542 L 198,530 L 184,518 L 170,506
+               L 156,492 L 144,476 L 132,460 L 122,442 L 112,422
+               L 104,400 L 98,376  L 92,352  L 88,326  L 84,300
+               L 80,274  L 78,248  L 76,222  L 74,196  L 74,170
+               L 76,146  L 80,122  L 86,100  L 94,80   L 106,62
+               L 120,48  L 138,38  L 158,32  L 180,30  L 204,30
+               L 230,32 Z"
+            fill="rgba(45,212,191,.07)"
+            stroke="rgba(45,212,191,.45)"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          />
+
+          <!-- ── PENINSULAR SOUTH TIP (more detail) ── -->
+          <path d="M 266,630 L 264,636 L 262,640 L 260,636 L 256,628 L 252,616 L 248,604 L 244,592" fill="none" stroke="rgba(45,212,191,.3)" stroke-width="1"/>
+
+          <!-- ── ANDAMAN & NICOBAR (far SE, inset box) ── -->
+          <rect x="492" y="390" width="52" height="90" rx="4" fill="rgba(45,212,191,.03)" stroke="rgba(45,212,191,.15)" stroke-width="1" stroke-dasharray="3 3"/>
+          <ellipse cx="518" cy="415" rx="4" ry="7" fill="rgba(45,212,191,.15)" stroke="rgba(45,212,191,.3)" stroke-width="1"/>
+          <ellipse cx="515" cy="432" rx="3" ry="6" fill="rgba(45,212,191,.12)" stroke="rgba(45,212,191,.25)" stroke-width="1"/>
+          <ellipse cx="520" cy="450" rx="3" ry="5" fill="rgba(45,212,191,.1)"  stroke="rgba(45,212,191,.22)" stroke-width="1"/>
+          <text x="518" y="470" text-anchor="middle" font-size="6.5" fill="rgba(45,212,191,.4)" font-family="system-ui">A&amp;N</text>
+
+          <!-- ── SRI LANKA (SE coast, reference) ── -->
+          <ellipse cx="298" cy="626" rx="9" ry="12" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+
+          <!-- ── APPROXIMATE STATE BORDERS (major divisions) ── -->
+          <!-- North–South Deccan divide ~lat 20°N → y≈376 -->
+          <path d="M 104,376 C 160,370 220,368 280,372 C 340,376 400,374 450,376" stroke="rgba(255,255,255,.06)" stroke-width="1" fill="none"/>
+          <!-- Vindhya range ~lat 24°N → y≈294 -->
+          <path d="M 84,294 C 150,288 230,286 300,290 C 360,294 430,290 504,288" stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none"/>
+          <!-- Ganges plain ~lat 28°N → y≈211 -->
+          <path d="M 80,211 C 160,205 250,204 330,207 C 400,210 460,208 508,210" stroke="rgba(255,255,255,.05)" stroke-width="1" fill="none"/>
+          <!-- West–East: Gujarat–Maharashtra border ~lon 74°E → x≈103 -->
+          <path d="M 124,160 C 118,220 112,300 108,380" stroke="rgba(255,255,255,.04)" stroke-width="1" fill="none"/>
+          <!-- Central meridian ~lon 80°E → x≈207 -->
+          <path d="M 207,40 L 207,560" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+          <!-- Eastern border hint ~lon 88°E → x≈345 -->
+          <path d="M 345,36 L 350,200 L 490,250" stroke="rgba(255,255,255,.04)" stroke-width="1" fill="none"/>
+
+          <!-- ── STATE LABELS (major states) ── -->
+          <text x="175" y="118" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">RAJASTHAN</text>
+          <text x="290" y="172" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">UTTAR PRADESH</text>
+          <text x="385" y="145" text-anchor="middle" font-size="6" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">BIHAR</text>
+          <text x="430" y="230" text-anchor="middle" font-size="6" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">WEST BENGAL</text>
+          <text x="140" y="245" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">GUJARAT</text>
+          <text x="200" y="310" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">MAHARASHTRA</text>
+          <text x="285" y="318" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">MADHYA PRADESH</text>
+          <text x="365" y="358" text-anchor="middle" font-size="6" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">ODISHA</text>
+          <text x="295" y="408" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">TELANGANA</text>
+          <text x="175" y="440" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">GOA</text>
+          <text x="244" y="468" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">KARNATAKA</text>
+          <text x="340" y="490" text-anchor="middle" font-size="7" fill="rgba(255,255,255,.18)" font-family="system-ui" font-weight="600">ANDHRA PRADESH</text>
+          <text x="270" y="555" text-anchor="middle" font-size="6.5" fill="rgba(255,255,255,.15)" font-family="system-ui" font-weight="600">TAMIL NADU</text>
+          <text x="170" y="510" text-anchor="middle" font-size="6" fill="rgba(255,255,255,.12)" font-family="system-ui" font-weight="600">KERALA</text>
+
+          <!-- ── TOP-10 NOISE HOTSPOT PINS ── -->
+          <!--
+            Pin positions derived from actual city lat/lon:
+            x = (lon - 68) * 17.3 + 30
+            y = (37 - lat) * 20.7 + 30
+            Delhi(28.6,77.2): x=164, y=206  → scaled in 560 vbox: x≈258, y≈185
+            Mumbai(19.1,72.8): x=87,  y=392  → x≈164, y≈375
+            Kolkata(22.5,88.3): x=350, y=322  → x≈430, y≈295
+            Chennai(13.1,80.3): x=212, y=505  → x≈284, y≈486
+            Bengaluru(12.9,77.6): x=165, y=509 → x≈241, y≈490
+            Hyderabad(17.4,78.5): x=181, y=406 → x≈267, y≈406
+            Lucknow(26.8,80.9): x=225, y=232  → x≈304, y≈206
+            Pune(18.5,73.8): x=100,  y=381  → x≈178, y≈387
+            Kanpur(26.4,80.3): x=212, y=241  → x≈292, y≈214
+            Jaipur(26.9,75.8): x=134, y=229  → x≈219, y≈199
+          -->
+
+          <!-- 1 Delhi NCR – lat 28.6 lon 77.2 -->
+          <g class="map-pin" data-city="Delhi (NCR)" data-db="82" data-rank="1">
+            <circle cx="258" cy="185" r="12" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+            <circle class="pulse" cx="258" cy="185" r="7" fill="none" stroke="#f87171" stroke-width="1.2"/>
+            <circle cx="258" cy="185" r="5" fill="#f87171"/>
+            <text x="258" y="170" text-anchor="middle" font-size="9" fill="#f87171" font-family="system-ui" font-weight="800">82 dB</text>
+          </g>
+
+          <!-- 2 Mumbai – lat 19.1 lon 72.8 -->
+          <g class="map-pin" data-city="Mumbai" data-db="79" data-rank="2">
+            <circle cx="164" cy="375" r="11" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+            <circle class="pulse" cx="164" cy="375" r="6" fill="none" stroke="#f87171" stroke-width="1.2" style="animation-delay:.4s"/>
+            <circle cx="164" cy="375" r="4.5" fill="#f87171"/>
+            <text x="164" y="361" text-anchor="middle" font-size="9" fill="#f87171" font-family="system-ui" font-weight="800">79 dB</text>
+          </g>
+
+          <!-- 3 Kolkata – lat 22.5 lon 88.3 -->
+          <g class="map-pin" data-city="Kolkata" data-db="77" data-rank="3">
+            <circle cx="430" cy="295" r="11" fill="rgba(248,113,113,.15)" stroke="#f87171" stroke-width="1.5"/>
+            <circle class="pulse" cx="430" cy="295" r="6" fill="none" stroke="#f87171" stroke-width="1.2" style="animation-delay:.8s"/>
+            <circle cx="430" cy="295" r="4.5" fill="#f87171"/>
+            <text x="430" y="281" text-anchor="middle" font-size="9" fill="#f87171" font-family="system-ui" font-weight="800">77 dB</text>
+          </g>
+
+          <!-- 4 Chennai – lat 13.1 lon 80.3 -->
+          <g class="map-pin" data-city="Chennai" data-db="75" data-rank="4">
+            <circle cx="284" cy="486" r="10" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+            <circle class="pulse" cx="284" cy="486" r="5.5" fill="none" stroke="#fbbf24" stroke-width="1" style="animation-delay:1.2s"/>
+            <circle cx="284" cy="486" r="4" fill="#fbbf24"/>
+            <text x="284" y="473" text-anchor="middle" font-size="9" fill="#fbbf24" font-family="system-ui" font-weight="800">75 dB</text>
+          </g>
+
+          <!-- 5 Bengaluru – lat 12.9 lon 77.6 -->
+          <g class="map-pin" data-city="Bengaluru" data-db="73" data-rank="5">
+            <circle cx="241" cy="490" r="10" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+            <circle class="pulse" cx="241" cy="490" r="5.5" fill="none" stroke="#fbbf24" stroke-width="1" style="animation-delay:1.6s"/>
+            <circle cx="241" cy="490" r="4" fill="#fbbf24"/>
+            <text x="241" y="477" text-anchor="middle" font-size="9" fill="#fbbf24" font-family="system-ui" font-weight="800">73 dB</text>
+          </g>
+
+          <!-- 6 Hyderabad – lat 17.4 lon 78.5 -->
+          <g class="map-pin" data-city="Hyderabad" data-db="72" data-rank="6">
+            <circle cx="267" cy="406" r="10" fill="rgba(251,191,36,.15)" stroke="#fbbf24" stroke-width="1.5"/>
+            <circle class="pulse" cx="267" cy="406" r="5.5" fill="none" stroke="#fbbf24" stroke-width="1" style="animation-delay:.6s"/>
+            <circle cx="267" cy="406" r="4" fill="#fbbf24"/>
+            <text x="267" y="393" text-anchor="middle" font-size="9" fill="#fbbf24" font-family="system-ui" font-weight="800">72 dB</text>
+          </g>
+
+          <!-- 7 Lucknow – lat 26.8 lon 80.9 -->
+          <g class="map-pin" data-city="Lucknow" data-db="70" data-rank="7">
+            <circle cx="304" cy="206" r="9" fill="rgba(45,212,191,.12)" stroke="#2dd4bf" stroke-width="1.5"/>
+            <circle class="pulse" cx="304" cy="206" r="5" fill="none" stroke="#2dd4bf" stroke-width="1" style="animation-delay:1s"/>
+            <circle cx="304" cy="206" r="3.5" fill="#2dd4bf"/>
+            <text x="304" y="194" text-anchor="middle" font-size="9" fill="#2dd4bf" font-family="system-ui" font-weight="800">70 dB</text>
+          </g>
+
+          <!-- 8 Pune – lat 18.5 lon 73.8 -->
+          <g class="map-pin" data-city="Pune" data-db="69" data-rank="8">
+            <circle cx="178" cy="387" r="9" fill="rgba(45,212,191,.12)" stroke="#2dd4bf" stroke-width="1.5"/>
+            <circle class="pulse" cx="178" cy="387" r="5" fill="none" stroke="#2dd4bf" stroke-width="1" style="animation-delay:1.4s"/>
+            <circle cx="178" cy="387" r="3.5" fill="#2dd4bf"/>
+            <text x="178" y="375" text-anchor="middle" font-size="9" fill="#2dd4bf" font-family="system-ui" font-weight="800">69 dB</text>
+          </g>
+
+          <!-- 9 Kanpur – lat 26.4 lon 80.3 -->
+          <g class="map-pin" data-city="Kanpur" data-db="68" data-rank="9">
+            <circle cx="292" cy="214" r="9" fill="rgba(45,212,191,.12)" stroke="#2dd4bf" stroke-width="1.5"/>
+            <circle class="pulse" cx="292" cy="214" r="5" fill="none" stroke="#2dd4bf" stroke-width="1" style="animation-delay:1.8s"/>
+            <circle cx="292" cy="214" r="3.5" fill="#2dd4bf"/>
+            <text x="292" y="202" text-anchor="middle" font-size="9" fill="#2dd4bf" font-family="system-ui" font-weight="800">68 dB</text>
+          </g>
+
+          <!-- 10 Jaipur – lat 26.9 lon 75.8 -->
+          <g class="map-pin" data-city="Jaipur" data-db="67" data-rank="10">
+            <circle cx="219" cy="199" r="9" fill="rgba(45,212,191,.12)" stroke="#2dd4bf" stroke-width="1.5"/>
+            <circle class="pulse" cx="219" cy="199" r="5" fill="none" stroke="#2dd4bf" stroke-width="1" style="animation-delay:.2s"/>
+            <circle cx="219" cy="199" r="3.5" fill="#2dd4bf"/>
+            <text x="219" y="187" text-anchor="middle" font-size="9" fill="#2dd4bf" font-family="system-ui" font-weight="800">67 dB</text>
+          </g>
+        </svg>
+
+        <!-- Legend -->
+        <div class="map-legend">
+          <div class="map-legend-item">
+            <div class="map-legend-dot" style="background:#f87171;"></div>
+            Critical (&gt;76 dB)
+          </div>
+          <div class="map-legend-item">
+            <div class="map-legend-dot" style="background:#fbbf24;"></div>
+            High (70–76 dB)
+          </div>
+          <div class="map-legend-item">
+            <div class="map-legend-dot" style="background:#2dd4bf;"></div>
+            Elevated (65–69 dB)
+          </div>
+        </div>
+      </div>
+
+      <!-- Top-10 rank sidebar -->
+      <div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:14px;">Top 10 Most Reported Cities</div>
+        <ul class="rank-list">
+          <li class="rank-item"><span class="rank-num top3">1</span><span class="rank-city">Delhi (NCR)</span><span class="rank-db">82 dB</span></li>
+          <li class="rank-item"><span class="rank-num top3">2</span><span class="rank-city">Mumbai</span><span class="rank-db">79 dB</span></li>
+          <li class="rank-item"><span class="rank-num top3">3</span><span class="rank-city">Kolkata</span><span class="rank-db">77 dB</span></li>
+          <li class="rank-item"><span class="rank-num">4</span><span class="rank-city">Chennai</span><span class="rank-db amber">75 dB</span></li>
+          <li class="rank-item"><span class="rank-num">5</span><span class="rank-city">Bengaluru</span><span class="rank-db amber">73 dB</span></li>
+          <li class="rank-item"><span class="rank-num">6</span><span class="rank-city">Hyderabad</span><span class="rank-db amber">72 dB</span></li>
+          <li class="rank-item"><span class="rank-num">7</span><span class="rank-city">Lucknow</span><span class="rank-db amber">70 dB</span></li>
+          <li class="rank-item"><span class="rank-num">8</span><span class="rank-city">Pune</span><span class="rank-db amber">69 dB</span></li>
+          <li class="rank-item"><span class="rank-num">9</span><span class="rank-city">Kanpur</span><span class="rank-db amber">68 dB</span></li>
+          <li class="rank-item"><span class="rank-num">10</span><span class="rank-city">Jaipur</span><span class="rank-db amber">67 dB</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- State-wise complaint table -->
+    <div class="state-table-wrap">
+      <h2 class="section-h2" style="font-size:22px;margin-bottom:20px;">State-wise Reported Complaints</h2>
+      <table class="state-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>State</th>
+            <th>Complaints</th>
+            <th>Avg dB</th>
+            <th>Top Zone</th>
+            <th>Severity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:var(--muted);">1</td>
+            <td><strong>Uttar Pradesh</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,842</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:100%"></div></div>
+              </div>
+            </td>
+            <td>74 dB</td><td>Industrial</td>
+            <td><span class="severity-badge critical">Critical</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">2</td>
+            <td><strong>Maharashtra</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,654</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:89%"></div></div>
+              </div>
+            </td>
+            <td>72 dB</td><td>Commercial</td>
+            <td><span class="severity-badge critical">Critical</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">3</td>
+            <td><strong>Delhi</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,520</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:82%"></div></div>
+              </div>
+            </td>
+            <td>82 dB</td><td>Silence Zone</td>
+            <td><span class="severity-badge critical">Critical</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">4</td>
+            <td><strong>West Bengal</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,310</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:71%"></div></div>
+              </div>
+            </td>
+            <td>71 dB</td><td>Residential</td>
+            <td><span class="severity-badge high">High</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">5</td>
+            <td><strong>Tamil Nadu</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,190</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:64%"></div></div>
+              </div>
+            </td>
+            <td>69 dB</td><td>Commercial</td>
+            <td><span class="severity-badge high">High</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">6</td>
+            <td><strong>Karnataka</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>1,080</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:58%"></div></div>
+              </div>
+            </td>
+            <td>68 dB</td><td>Industrial</td>
+            <td><span class="severity-badge high">High</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">7</td>
+            <td><strong>Rajasthan</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>940</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:51%"></div></div>
+              </div>
+            </td>
+            <td>66 dB</td><td>Residential</td>
+            <td><span class="severity-badge high">High</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">8</td>
+            <td><strong>Telangana</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>875</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:47%"></div></div>
+              </div>
+            </td>
+            <td>66 dB</td><td>Commercial</td>
+            <td><span class="severity-badge high">High</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">9</td>
+            <td><strong>Punjab</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>780</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:42%"></div></div>
+              </div>
+            </td>
+            <td>65 dB</td><td>Residential</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">10</td>
+            <td><strong>Gujarat</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>720</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:39%"></div></div>
+              </div>
+            </td>
+            <td>64 dB</td><td>Industrial</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">11</td>
+            <td><strong>Bihar</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>655</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:35%"></div></div>
+              </div>
+            </td>
+            <td>63 dB</td><td>Residential</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">12</td>
+            <td><strong>Madhya Pradesh</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>610</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:33%"></div></div>
+              </div>
+            </td>
+            <td>62 dB</td><td>Commercial</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">13</td>
+            <td><strong>Andhra Pradesh</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>558</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:30%"></div></div>
+              </div>
+            </td>
+            <td>61 dB</td><td>Industrial</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">14</td>
+            <td><strong>Haryana</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>505</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:27%"></div></div>
+              </div>
+            </td>
+            <td>60 dB</td><td>Silence Zone</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+          <tr>
+            <td style="color:var(--muted);">15</td>
+            <td><strong>Odisha</strong></td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span>420</span>
+                <div class="complaint-bar-bg"><div class="complaint-bar" style="width:22%"></div></div>
+              </div>
+            </td>
+            <td>59 dB</td><td>Residential</td>
+            <td><span class="severity-badge moderate">Moderate</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ TRACK THE PATTERN ══════ -->
+<div class="track-wrap">
+  <div class="track-inner">
+    <div class="track-copy">
+      <div class="section-label">Track the pattern</div>
+      <h2 class="section-h2">Connecting the dots across your city.</h2>
+      <div class="track-lines">
+        <p>
+          <strong>Helping you see the noise around you.</strong><br>
+          So your neighborhood's story is backed by data,<br>
+          not just complaints.
+        </p>
+      </div>
+    </div>
+    <!-- Illustration: phone connecting to map pins via sound waves -->
+    <div class="track-illo">
+      <svg viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background city hint -->
+        <rect x="20" y="240" width="18" height="60" rx="3" fill="rgba(255,255,255,.04)"/>
+        <rect x="44" y="220" width="22" height="80" rx="3" fill="rgba(255,255,255,.04)"/>
+        <rect x="72" y="250" width="14" height="50" rx="3" fill="rgba(255,255,255,.04)"/>
+        <rect x="310" y="230" width="18" height="70" rx="3" fill="rgba(255,255,255,.04)"/>
+        <rect x="334" y="245" width="22" height="55" rx="3" fill="rgba(255,255,255,.04)"/>
+        <rect x="362" y="210" width="18" height="90" rx="3" fill="rgba(255,255,255,.04)"/>
+        <!-- Person -->
+        <circle cx="200" cy="260" r="16" fill="#2a2f5a"/>
+        <rect x="188" y="276" width="24" height="48" rx="8" fill="#2a2f5a"/>
+        <path d="M200 174 L200 246" stroke="rgba(167,139,250,.3)" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- Phone device -->
+        <rect x="185" y="120" width="30" height="54" rx="6" fill="#1a1f42" stroke="rgba(167,139,250,.5)" stroke-width="1.5"/>
+        <rect x="188" y="125" width="24" height="32" rx="3" fill="rgba(167,139,250,.1)"/>
+        <!-- Signal lines from phone -->
+        <path d="M215 147 C240 100 290 80 320 90" stroke="rgba(45,212,191,.45)" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <path d="M215 147 C240 160 310 185 340 170" stroke="rgba(251,191,36,.4)" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <path d="M185 147 C160 100 110 70 80 90" stroke="rgba(248,113,113,.45)" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <path d="M185 147 C165 175 120 200 90 195" stroke="rgba(45,212,191,.3)" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <path d="M200 120 C200 80 200 50 200 30" stroke="rgba(167,139,250,.3)" stroke-width="1.5" stroke-dasharray="5 3"/>
+        <!-- Map pins at ends -->
+        <!-- Teal pin -->
+        <circle cx="325" cy="88" r="10" fill="rgba(45,212,191,.15)" stroke="rgba(45,212,191,.6)" stroke-width="1.5"/>
+        <circle cx="325" cy="88" r="4" fill="#2dd4bf"/>
+        <text x="325" y="75" text-anchor="middle" font-size="8" fill="rgba(45,212,191,.7)" font-family="system-ui">42 dB</text>
+        <!-- Amber pin -->
+        <circle cx="345" cy="168" r="10" fill="rgba(251,191,36,.15)" stroke="rgba(251,191,36,.6)" stroke-width="1.5"/>
+        <circle cx="345" cy="168" r="4" fill="#fbbf24"/>
+        <text x="345" y="155" text-anchor="middle" font-size="8" fill="rgba(251,191,36,.7)" font-family="system-ui">65 dB</text>
+        <!-- Coral pin -->
+        <circle cx="75" cy="88" r="10" fill="rgba(248,113,113,.15)" stroke="rgba(248,113,113,.6)" stroke-width="1.5"/>
+        <circle cx="75" cy="88" r="4" fill="#f87171"/>
+        <text x="75" y="75" text-anchor="middle" font-size="8" fill="rgba(248,113,113,.7)" font-family="system-ui">78 dB</text>
+        <!-- Teal 2 pin -->
+        <circle cx="88" cy="195" r="10" fill="rgba(45,212,191,.15)" stroke="rgba(45,212,191,.5)" stroke-width="1.5"/>
+        <circle cx="88" cy="195" r="4" fill="#2dd4bf"/>
+        <text x="88" y="182" text-anchor="middle" font-size="8" fill="rgba(45,212,191,.6)" font-family="system-ui">38 dB</text>
+        <!-- Purple pin top -->
+        <circle cx="200" cy="28" r="10" fill="rgba(167,139,250,.15)" stroke="rgba(167,139,250,.6)" stroke-width="1.5"/>
+        <circle cx="200" cy="28" r="4" fill="#a78bfa"/>
+        <text x="200" y="15" text-anchor="middle" font-size="8" fill="rgba(167,139,250,.7)" font-family="system-ui">55 dB</text>
+        <!-- Phone screen label -->
+        <text x="200" y="143" text-anchor="middle" font-size="6" fill="rgba(167,139,250,.8)" font-family="system-ui" font-weight="700">LIVE</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ APP / TOOL ══════ -->
+<div class="app-wrap" id="app">
+  <div class="app-inner">
+    <div class="section-label">Classify a reading</div>
+    <h2 class="section-h2">Check your reading now.</h2>
+
+    <!-- Main form card -->
+    <div class="f-card">
+      <div class="f-card-title">Reading details</div>
+      <div class="form-grid">
+        <div class="full">
+          <label for="location">Location</label>
+          <input id="location" value="Near Lotus Public School, Sector 12" placeholder="Street or area name">
+        </div>
+        <div>
+          <label for="db">Decibel reading (dB)</label>
+          <input id="db" type="number" min="0" max="200" value="78">
+        </div>
+        <div>
+          <label for="zone">Zone type</label>
+          <select id="zone">
+            <option value="residential">Residential</option>
+            <option value="silence" selected>Silence zone (school / hospital)</option>
+            <option value="commercial">Commercial</option>
+            <option value="industrial">Industrial</option>
+          </select>
+        </div>
+        <div>
+          <label for="timeOfDay">Time of day</label>
+          <select id="timeOfDay">
+            <option value="day">Day (6 AM – 10 PM)</option>
+            <option value="night" selected>Night (10 PM – 6 AM)</option>
+          </select>
+        </div>
+        <div>
+          <label for="duration">Duration</label>
+          <select id="duration">
+            <option value="brief">Brief (short burst)</option>
+            <option value="sustained" selected>Sustained (ongoing)</option>
+          </select>
+        </div>
+        <div class="full">
+          <label for="question">Your question (optional)</label>
+          <input id="question" placeholder="e.g. What complaint should I file?">
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="submit-btn" id="askBtn">Classify reading</button>
+        <button class="clear-btn" id="clearBtn">✕ Clear</button>
+      </div>
+      <div id="formError" class="error"></div>
+    </div>
+
+    <!-- Result -->
+    <div id="result">
+      <div id="banner" class="banner"></div>
+
+      <div class="f-card">
+        <div class="f-card-title">Reading details</div>
+        <div class="stat-grid">
+          <div class="stat">
+            <div class="stat-label">Measured</div>
+            <div class="stat-value" id="statDb"></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Legal limit</div>
+            <div class="stat-value" id="statLimit"></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Over by</div>
+            <div class="stat-value" id="statOver"></div>
+          </div>
+        </div>
+        <div class="info-row"><strong>Zone:</strong> <span id="infoZone"></span></div>
+        <div class="info-row"><strong>Time / Duration:</strong> <span id="infoTime"></span></div>
+        <div class="info-row"><strong>Data source:</strong> <span id="infoSource"></span></div>
+        <div class="info-row"><strong>Likely source:</strong> <span id="infoSrcGuess"></span></div>
+      </div>
+
+      <div class="f-card">
+        <div class="f-card-title">Regulation reference</div>
+        <ul class="passages" id="passages"></ul>
+      </div>
+
+      <div class="f-card">
+        <div class="f-card-title">Advisory</div>
+        <div id="questionEcho" style="display:none;">
+          <strong>Your question:</strong> <span id="questionEchoText"></span>
+        </div>
+        <div class="answer" id="answer"></div>
+      </div>
+    </div>
+
+    <!-- Submit a reading -->
+    <button class="toggle-btn" id="toggleSubmit">+ Submit a new reading to the database</button>
+    <div id="submitSection">
+      <div class="f-card">
+        <div class="f-card-title">Submit reading</div>
+        <div class="form-grid">
+          <div class="full">
+            <label for="sLocation">Location</label>
+            <input id="sLocation" placeholder="Street or area name">
+          </div>
+          <div>
+            <label for="sDb">Decibel reading (dB)</label>
+            <input id="sDb" type="number" min="0" max="200" placeholder="e.g. 72">
+          </div>
+          <div>
+            <label for="sTimeOfDay">Time of day</label>
+            <select id="sTimeOfDay">
+              <option value="day">Day</option>
+              <option value="night">Night</option>
+            </select>
+          </div>
+          <div class="full">
+            <label for="sDuration">Duration</label>
+            <select id="sDuration">
+              <option value="brief">Brief</option>
+              <option value="sustained">Sustained</option>
+            </select>
+          </div>
+        </div>
+        <button class="submit-btn" id="submitBtn" style="margin-top:18px;">Submit reading</button>
+        <div id="submitMsg" style="margin-top:10px; font-size:13px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ HISTORY ══════ -->
+<div class="history-wrap" id="history">
+  <div class="history-inner">
+    <div class="section-label">Complaint History</div>
+    <div class="history-header">
+      <h2 class="section-h2">Your saved readings.</h2>
+      <button class="history-clear-btn" id="historyClearBtn" disabled>
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 3h10M5 3V2h4v1M3 3l1 9h6l1-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Clear all
+      </button>
+    </div>
+    <div id="historyList">
+      <!-- empty state shown by default -->
+      <div class="history-empty" id="historyEmpty">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="12" width="32" height="28" rx="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M16 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2"/>
+          <line x1="17" y1="22" x2="31" y2="22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <line x1="17" y1="28" x2="27" y2="28" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <p><strong>No complaints saved yet.</strong>
+        Classify a reading above and it will automatically appear here for your records.</p>
+      </div>
+      <ul class="history-list" id="historyCards"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ XAYA CHATBOT WIDGET ══════ -->
+<!-- Floating toggle button -->
+<button class="xaya-btn" id="xayaToggleBtn" aria-label="Open Xaya chat">
+  <!-- Chat icon (default) -->
+  <svg class="icon-chat" width="24" height="24" viewBox="0 0 24 24" fill="none">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+      stroke="#071a18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <!-- Close icon (when open) -->
+  <svg class="icon-close" width="20" height="20" viewBox="0 0 20 20" fill="none" style="display:none;">
+    <path d="M5 5l10 10M15 5L5 15" stroke="#071a18" stroke-width="2.2" stroke-linecap="round"/>
+  </svg>
+  <!-- Unread badge -->
+  <span class="xaya-badge" id="xayaBadge">1</span>
+</button>
+
+<!-- Chat panel -->
+<div class="xaya-panel" id="xayaPanel" role="dialog" aria-label="Xaya chat">
+  <!-- Header -->
+  <div class="xaya-header">
+    <div class="xaya-avatar">🌿</div>
+    <div>
+      <div class="xaya-name">Xaya</div>
+      <div class="xaya-status">Online</div>
+    </div>
+    <button class="xaya-close-btn" id="xayaCloseBtn" aria-label="Close chat">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M4 4l8 8M12 4L4 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Messages -->
+  <div class="xaya-messages" id="xayaMessages"></div>
+
+  <!-- Quick-reply chips -->
+  <div class="xaya-chips" id="xayaChips"></div>
+
+  <!-- Input row -->
+  <div class="xaya-input-row">
+    <textarea
+      class="xaya-input"
+      id="xayaInput"
+      placeholder="Ask about noise limits, complaints…"
+      rows="1"
+      aria-label="Type your message"></textarea>
+    <button class="xaya-send-btn" id="xayaSendBtn" aria-label="Send">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M14 2L2 7l5 2 2 5 5-12z" fill="#071a18"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+// ── Ripple canvas ──────────────────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('rippleCanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, origins;
+
+  function resize() {
+    W = canvas.width  = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+    origins = [
+      {x: W * .18, y: H * .45},
+      {x: W * .6,  y: H * .3},
+      {x: W * .82, y: H * .65},
+    ];
+  }
+
+  let tick = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    tick += .008;
+    origins.forEach((o, i) => {
+      for (let r = 0; r < 5; r++) {
+        const radius = ((tick * 60 + r * 80 + i * 40) % 320) + 10;
+        const alpha  = Math.max(0, .18 - radius / 320 * .18);
+        ctx.beginPath();
+        ctx.arc(o.x, o.y, radius, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(45,212,191,${alpha})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+})();
+
+// ── Classify / report ──────────────────────────────────────────────────────
+document.getElementById('askBtn').addEventListener('click', async () => {
+  const dbVal = parseInt(document.getElementById('db').value, 10);
+  const formError = document.getElementById('formError');
+  formError.textContent = '';
+
+  if (!document.getElementById('location').value.trim()) {
+    formError.textContent = 'Please enter a location.'; return;
+  }
+  if (isNaN(dbVal) || dbVal < 0 || dbVal > 200) {
+    formError.textContent = 'Decibel reading must be between 0 and 200.'; return;
+  }
+
+  const body = {
+    location: document.getElementById('location').value.trim(),
+    db: dbVal,
+    time_of_day: document.getElementById('timeOfDay').value,
+    duration: document.getElementById('duration').value,
+    zone: document.getElementById('zone').value,
+    question: document.getElementById('question').value.trim() || null,
+  };
+
+  const btn = document.getElementById('askBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span>Analysing…';
+  document.getElementById('result').style.display = 'none';
+
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 130000); // 130 s to cover 2 retries
+    const res = await fetch('/api/report', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    clearTimeout(timer);
+    if (!res.ok) {
+      const err = await res.json();
+      formError.textContent = 'Error: ' + (err.detail || res.statusText);
+      return;
+    }
+    const d = await res.json();
+
+    // Banner
+    const banner = document.getElementById('banner');
+    if (d.exceeds) {
+      banner.className = 'banner exceeds';
+      banner.textContent = `⚠️  EXCEEDS limit by ${d.over_by} dB — ${d.zone_label}`;
+    } else {
+      banner.className = 'banner ok';
+      banner.textContent = `✓  Within limit — ${d.zone_label}`;
+    }
+
+    // Stats
+    document.getElementById('statDb').textContent = d.db + ' dB';
+    document.getElementById('statDb').className = 'stat-value ' + (d.exceeds ? 'red' : 'green');
+    document.getElementById('statLimit').textContent = d.limit + ' dB';
+    document.getElementById('statOver').textContent = d.over_by > 0 ? '+' + d.over_by + ' dB' : '—';
+    document.getElementById('statOver').className = 'stat-value ' + (d.over_by > 0 ? 'red' : 'green');
+
+    // Info rows
+    document.getElementById('infoZone').textContent = d.zone_label + ' (' + d.zone + ')';
+    document.getElementById('infoTime').textContent = d.time_of_day + ', ' + d.duration;
+    document.getElementById('infoSource').textContent = d.data_source;
+    document.getElementById('infoSrcGuess').textContent = d.source_guess;
+
+    // Passages
+    const pList = document.getElementById('passages');
+    pList.innerHTML = '';
+    (d.regulation_passages || []).forEach(p => {
+      const li = document.createElement('li');
+      li.textContent = p;
+      pList.appendChild(li);
+    });
+    if (!d.regulation_passages || d.regulation_passages.length === 0) {
+      pList.innerHTML = '<li>No specific passage retrieved.</li>';
+    }
+
+    // Question echo
+    const qVal = body.question;
+    const echoBox = document.getElementById('questionEcho');
+    if (qVal) {
+      document.getElementById('questionEchoText').textContent = qVal;
+      echoBox.style.display = 'block';
+    } else {
+      echoBox.style.display = 'none';
+    }
+
+    // Answer
+    document.getElementById('answer').textContent = d.answer;
+
+    document.getElementById('result').style.display = 'block';
+    document.getElementById('result').scrollIntoView({behavior: 'smooth', block: 'start'});
+
+    // ── Save to history ──────────────────────────────────────────────────
+    historySave({
+      id: Date.now(),
+      savedAt: new Date().toISOString(),
+      location: d.location,
+      zone: d.zone,
+      zone_label: d.zone_label,
+      db: d.db,
+      limit: d.limit,
+      exceeds: d.exceeds,
+      over_by: d.over_by,
+      time_of_day: d.time_of_day,
+      duration: d.duration,
+      source_guess: d.source_guess,
+      question: body.question || null,
+      answer: d.answer,
+    });
+  } catch (err) {
+    formError.textContent = 'Network error: ' + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Classify reading';
+  }
+});
+
+// ── Clear form + result ────────────────────────────────────────────────────
+document.getElementById('clearBtn').addEventListener('click', () => {
+  document.getElementById('location').value = '';
+  document.getElementById('db').value = '';
+  document.getElementById('zone').selectedIndex = 0;
+  document.getElementById('timeOfDay').selectedIndex = 0;
+  document.getElementById('duration').selectedIndex = 0;
+  document.getElementById('question').value = '';
+  document.getElementById('formError').textContent = '';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('answer').textContent = '';
+  document.getElementById('passages').innerHTML = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ── Submit reading ─────────────────────────────────────────────────────────
+document.getElementById('toggleSubmit').addEventListener('click', () => {
+  const sec = document.getElementById('submitSection');
+  sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+});
+
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const loc = document.getElementById('sLocation').value.trim();
+  const db  = parseInt(document.getElementById('sDb').value, 10);
+  const msg = document.getElementById('submitMsg');
+  msg.textContent = '';
+
+  if (!loc) { msg.style.color = 'var(--coral)'; msg.textContent = 'Please enter a location.'; return; }
+  if (isNaN(db) || db < 0 || db > 200) { msg.style.color = 'var(--coral)'; msg.textContent = 'dB must be 0–200.'; return; }
+
+  const body = {
+    location: loc, db,
+    time_of_day: document.getElementById('sTimeOfDay').value,
+    duration: document.getElementById('sDuration').value,
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch('/api/readings', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      msg.style.color = 'var(--teal)';
+      msg.textContent = `✓ Reading for "${data.location}" saved (${data.db} dB, ${data.time_of_day}, ${data.duration}).`;
+    } else {
+      msg.style.color = 'var(--coral)';
+      msg.textContent = 'Error: ' + (data.detail || 'Unknown error');
+    }
+  } catch (err) {
+    msg.style.color = 'var(--coral)';
+    msg.textContent = 'Network error: ' + err.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Submit reading';
+  }
+});
+
+// ── History (localStorage) ────────────────────────────────────────────────
+const HISTORY_KEY = 'noiseHistory_v1';
+
+function historyLoad() {
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function historySave(entry) {
+  const items = historyLoad();
+  items.unshift(entry); // newest first
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(items.slice(0, 100))); // cap at 100
+  historyRender();
+}
+
+function historyDelete(id) {
+  const items = historyLoad().filter(e => e.id !== id);
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(items));
+  historyRender();
+}
+
+function historyClearAll() {
+  if (!confirm('Delete all saved complaint history? This cannot be undone.')) return;
+  localStorage.removeItem(HISTORY_KEY);
+  historyRender();
+}
+
+function historyRender() {
+  const items       = historyLoad();
+  const listEl      = document.getElementById('historyCards');
+  const emptyEl     = document.getElementById('historyEmpty');
+  const clearBtn    = document.getElementById('historyClearBtn');
+
+  if (!listEl) return;
+  listEl.innerHTML = '';
+
+  if (items.length === 0) {
+    emptyEl.style.display = '';
+    listEl.style.display  = 'none';
+    clearBtn.disabled = true;
+    return;
+  }
+
+  emptyEl.style.display = 'none';
+  listEl.style.display  = '';
+  clearBtn.disabled = false;
+
+  items.forEach(e => {
+    const li = document.createElement('li');
+    li.className = 'history-card ' + (e.exceeds ? 'exceeds' : 'ok');
+
+    // Date format
+    const dt = new Date(e.savedAt);
+    const dateStr = dt.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+                  + ' ' + dt.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+
+    // Status chip colour
+    const dbChipClass = e.exceeds ? 'red' : 'green';
+    const overText    = e.exceeds ? `+${e.over_by} dB over limit` : 'Within limit';
+    const zoneColors  = { residential:'amber', silence:'purple', commercial:'amber', industrial:'red' };
+    const zoneClass   = zoneColors[e.zone] || '';
+
+    const answerPreview = e.answer
+      ? e.answer.replace(/\[Mock response[^\]]*\]/gi, '').trim().slice(0, 180)
+      : '';
+
+    li.innerHTML = `
+      <div class="history-card-header">
+        <div class="history-card-loc">${_esc(e.location)}</div>
+        <div class="history-card-date">${dateStr}</div>
+      </div>
+      <div class="history-card-chips">
+        <span class="history-chip ${dbChipClass}">${e.db} dB</span>
+        <span class="history-chip ${dbChipClass}">${overText}</span>
+        <span class="history-chip ${zoneClass}">${_esc(e.zone_label)}</span>
+        <span class="history-chip">${e.time_of_day} · ${e.duration}</span>
+        <span class="history-chip">Limit: ${e.limit} dB</span>
+      </div>
+      ${answerPreview ? `<div class="history-card-answer">${_esc(answerPreview)}…</div>` : ''}
+      <div class="history-card-footer">
+        <button class="history-del-btn" data-id="${e.id}">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M1 2.5h10M4 2.5V1.5h4v1M2 2.5l.9 8h6.2l.9-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Delete
+        </button>
+        <button class="history-rerun-btn" data-id="${e.id}">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M10 2A5 5 0 1 0 11 6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M8 0l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Re-run
+        </button>
+        ${e.question ? `<span class="history-count" title="${_esc(e.question)}">Q: ${_esc(e.question.slice(0,40))}${e.question.length > 40 ? '…' : ''}</span>` : ''}
+      </div>
+    `;
+
+    li.querySelector('.history-del-btn').addEventListener('click', function() {
+      historyDelete(Number(this.dataset.id));
+    });
+
+    li.querySelector('.history-rerun-btn').addEventListener('click', function() {
+      const item = historyLoad().find(x => x.id === Number(this.dataset.id));
+      if (!item) return;
+      document.getElementById('location').value   = item.location;
+      document.getElementById('db').value          = item.db;
+      document.getElementById('zone').value        = item.zone;
+      document.getElementById('timeOfDay').value   = item.time_of_day;
+      document.getElementById('duration').value    = item.duration;
+      document.getElementById('question').value    = item.question || '';
+      document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    listEl.appendChild(li);
+  });
+}
+
+function _esc(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.getElementById('historyClearBtn').addEventListener('click', historyClearAll);
+
+// Render on page load
+historyRender();
+
+// ── Map pin tooltips ───────────────────────────────────────────────────────
+(function() {
+  const tooltip = document.getElementById('mapTooltip');
+  const container = document.getElementById('mapContainer');
+  if (!tooltip || !container) return;
+
+  document.querySelectorAll('.map-pin').forEach(pin => {
+    pin.addEventListener('mouseenter', function(e) {
+      const city = this.dataset.city;
+      const db   = this.dataset.db;
+      const rank = this.dataset.rank;
+      tooltip.textContent = '#' + rank + ' ' + city + ' — ' + db + ' dB avg';
+      tooltip.classList.add('visible');
+    });
+    pin.addEventListener('mousemove', function(e) {
+      const rect = container.getBoundingClientRect();
+      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tooltip.style.top  = (e.clientY - rect.top  - 28) + 'px';
+    });
+    pin.addEventListener('mouseleave', function() {
+      tooltip.classList.remove('visible');
+    });
+  });
+})();
+
+// ── Xaya Chatbot ──────────────────────────────────────────────────────────
+(function () {
+  const panel     = document.getElementById('xayaPanel');
+  const toggleBtn = document.getElementById('xayaToggleBtn');
+  const closeBtn  = document.getElementById('xayaCloseBtn');
+  const messages  = document.getElementById('xayaMessages');
+  const input     = document.getElementById('xayaInput');
+  const sendBtn   = document.getElementById('xayaSendBtn');
+  const badge     = document.getElementById('xayaBadge');
+  let isOpen      = false;
+  let greeted     = false;
+
+  // ── open / close ──────────────────────────────────────────────
+  function openChat() {
+    panel.classList.add('open');
+    isOpen = true;
+    badge.style.display = 'none';
+    toggleBtn.setAttribute('aria-label', 'Close Xaya chat');
+    // swap icon to X
+    toggleBtn.querySelector('.icon-chat').style.display = 'none';
+    toggleBtn.querySelector('.icon-close').style.display = '';
+    if (!greeted) {
+      greeted = true;
+      appendBot('Hi! I\'m Xaya \uD83C\uDF0F Your noise pollution guide. How can I help you today?');
+      renderChips();
+    }
+    setTimeout(() => input.focus(), 220);
+  }
+
+  function closeChat() {
+    panel.classList.remove('open');
+    isOpen = false;
+    toggleBtn.setAttribute('aria-label', 'Open Xaya chat');
+    toggleBtn.querySelector('.icon-chat').style.display = '';
+    toggleBtn.querySelector('.icon-close').style.display = 'none';
+  }
+
+  toggleBtn.addEventListener('click', () => isOpen ? closeChat() : openChat());
+  closeBtn.addEventListener('click', closeChat);
+
+  // Help nav link opens chatbot
+  const helpLink = document.getElementById('helpNavLink');
+  if (helpLink) {
+    helpLink.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (!isOpen) openChat();
+    });
+  }
+
+  // ── message helpers ──────────────────────────────────────────
+  function appendMsg(text, role) {
+    const div = document.createElement('div');
+    div.className = 'xaya-msg ' + role;
+    div.textContent = text;
+    messages.appendChild(div);
+    messages.scrollTop = messages.scrollHeight;
+    return div;
+  }
+  function appendBot(text) { return appendMsg(text, 'bot'); }
+  function appendUser(text) { return appendMsg(text, 'user'); }
+
+  function showTyping() {
+    const t = document.createElement('div');
+    t.className = 'xaya-typing';
+    t.id = 'xayaTyping';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    messages.appendChild(t);
+    messages.scrollTop = messages.scrollHeight;
+  }
+  function hideTyping() {
+    const t = document.getElementById('xayaTyping');
+    if (t) t.remove();
+  }
+
+  // ── quick-reply chips ─────────────────────────────────────────
+  function renderChips() {
+    const chips = document.getElementById('xayaChips');
+    if (!chips) return;
+    const options = [
+      'What are India\'s noise limits?',
+      'How do I file a complaint?',
+      'What is a silence zone?',
+      'Health effects of noise?',
+    ];
+    options.forEach(label => {
+      const btn = document.createElement('button');
+      btn.className = 'xaya-chip';
+      btn.textContent = label;
+      btn.addEventListener('click', () => {
+        chips.innerHTML = '';
+        send(label);
+      });
+      chips.appendChild(btn);
+    });
+  }
+
+  // ── Detect whether a message will trigger a web search ──────────────
+  const WEB_KEYWORDS = [
+    'total','how many','number','count','cases','complaints',
+    'statistics','data','report','filed','recorded','india',
+    'percent','%','annual','year','2023','2024',
+  ];
+  function needsWebSearch(text) {
+    const lower = text.toLowerCase();
+    return WEB_KEYWORDS.some(kw => lower.includes(kw));
+  }
+
+  // ── send a message ─────────────────────────────────────────
+  async function send(text) {
+    if (!text.trim()) return;
+    appendUser(text);
+    input.value = '';
+    input.style.height = '';
+    sendBtn.disabled = true;
+
+    // Show "searching web…" hint for stat queries, else normal typing dots
+    if (needsWebSearch(text)) {
+      showSearching();
+    } else {
+      showTyping();
+    }
+
+    try {
+      const res = await fetch('/api/chat/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text }),
+      });
+      hideTyping();
+      if (!res.ok) {
+        const err = await res.json();
+        appendBot('Sorry, I ran into an issue. Please try again! (' + (err.detail || res.statusText) + ')');
+        return;
+      }
+      const data = await res.json();
+      appendBot(data.reply);
+    } catch (err) {
+      hideTyping();
+      appendBot('Network error — please check your connection and try again.');
+    } finally {
+      sendBtn.disabled = false;
+      input.focus();
+    }
+  }
+
+  function showSearching() {
+    const t = document.createElement('div');
+    t.id = 'xayaTyping';
+    t.style.cssText = 'display:flex;align-items:center;gap:6px;padding:10px 13px;align-self:flex-start;font-size:11px;color:var(--teal);';
+    t.innerHTML = `
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" style="flex-shrink:0;animation:spin .8s linear infinite">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5" stroke-dasharray="8 8"/>
+      </svg>
+      Searching the web…`;
+    messages.appendChild(t);
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  sendBtn.addEventListener('click', () => send(input.value));
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      send(this.value);
+    }
+  });
+  // Auto-grow textarea
+  input.addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+  });
+})();
+</script>
+</body>
+</html>
